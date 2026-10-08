@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FDE Module 2 Starter Kit: Pre-work, Python and Git</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f7;--panel:#fff;--ink:#12232e;--mute:#53656f;--line:#d3dde3;--acc:#0e7c86;--accsoft:#dff1f2;--tip:#fff4dc;--tipline:#e0a63a;--code:#15232c;--codeink:#e6f1f5;--ok:#1d7a46;--font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--head:"Bricolage Grotesque",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a21;--panel:#16252e;--ink:#e6eef2;--mute:#9ab0bb;--line:#2a3d48;--acc:#4fc3cd;--accsoft:#173a40;--tip:#3a2f17;--tipline:#c9962f;--code:#0a1318;--ok:#5bd08a}}
+:root[data-theme="dark"]{--bg:#0e1a21;--panel:#16252e;--ink:#e6eef2;--mute:#9ab0bb;--line:#2a3d48;--acc:#4fc3cd;--accsoft:#173a40;--tip:#3a2f17;--tipline:#c9962f;--code:#0a1318;--ok:#5bd08a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--font)}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 64px}
+h1{font:800 clamp(1.8rem,5vw,2.6rem)/1.1 var(--head);margin:8px 0 8px;letter-spacing:-.02em}
+h2{font:600 1.35rem/1.25 var(--head);margin:0 0 8px}
+h3{font:600 1.05rem/1.3 var(--head);margin:0 0 6px}
+p{margin:6px 0}
+.lede{color:var(--mute);max-width:62ch}
+.meter{margin:18px 0 6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .35s}
+.tabs{display:flex;gap:6px;margin:18px 0;flex-wrap:wrap}
+.tabs button,.os button{font:600 .95rem var(--font);padding:9px 16px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;cursor:pointer}
+.tabs button[aria-selected=true],.os button[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--tipline);outline-offset:2px}
+.os{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0 16px}
+.step{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:4px 14px 14px 4px;padding:14px 16px;margin:14px 0}
+.step.done{border-left-color:var(--ok)}
+.chk{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.chk input{width:22px;height:22px;margin-top:3px;accent-color:var(--acc);flex:none}
+.chk b{font:600 1.1rem/1.3 var(--head)}
+.step ul,.step ol{padding-left:22px;margin:6px 0}
+.tip{background:var(--tip);border-left:4px solid var(--tipline);padding:8px 12px;border-radius:4px;margin:10px 0;font-size:.95rem}
+details{margin-top:8px}summary{cursor:pointer;color:var(--acc);font-weight:600}
+pre{position:relative;background:var(--code);color:var(--codeink);font:400 .86rem/1.55 var(--mono);padding:12px 14px;border-radius:8px;overflow-x:auto;margin:8px 0}
+code{font-family:var(--mono);font-size:.9em;background:var(--accsoft);padding:1px 5px;border-radius:4px}
+pre code{background:none;padding:0}
+.cp{position:absolute;top:6px;right:6px;font:600 .75rem var(--font);background:#2c424f;color:#e6f1f5;border:0;border-radius:6px;padding:3px 9px;cursor:pointer}
+body[data-os=win] [data-o]:not([data-o~=win]),body[data-os=mac] [data-o]:not([data-o~=mac]),body[data-os=linux] [data-o]:not([data-o~=linux]){display:none}
+.ready{display:none;background:var(--accsoft);border:2px solid var(--ok);border-radius:14px;padding:14px 16px;margin:14px 0}
+.ready.on{display:block}
+.search{width:100%;padding:11px 14px;font:inherit;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,370px),1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:10px;padding:12px 14px;min-width:0}
+.card.git{border-top-color:var(--tipline)}
+.card h3{margin-bottom:2px}.card p{color:var(--mute);font-size:.9rem;margin:0 0 4px}
+.hide{display:none!important}
+.model{font:400 .9rem/1.5 var(--mono);background:var(--code);color:var(--codeink);padding:12px 14px;border-radius:8px;overflow-x:auto;white-space:pre;margin:0 0 14px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body data-os="win">
+<div class="wrap">
+<h1>Module 2 Starter Kit</h1>
+<p class="lede">Set up your laptop before the first class, then keep the Python and Git cheat sheets open while you code. You do not need to know any Python yet. Tick each step as you finish it; your progress is saved in this browser.</p>
+
+<div class="meter"><b id="pt">0 of 6 steps done</b><div class="bar"><i id="pb"></i></div></div>
+
+<div class="tabs" role="tablist">
+<button role="tab" data-tab="pre" aria-selected="true">Pre-work</button>
+<button role="tab" data-tab="py" aria-selected="false">Python cheat sheet</button>
+<button role="tab" data-tab="git" aria-selected="false">Git cheat sheet</button>
+</div>
+
+<!-- PRE-WORK -->
+<section id="pre">
+<div class="os" role="group" aria-label="Choose your computer">
+<span>Your computer:</span>
+<button data-os="win" aria-selected="true">Windows</button>
+<button data-os="mac" aria-selected="false">Mac</button>
+<button data-os="linux" aria-selected="false">Linux</button>
+</div>
+
+<div class="step"><label class="chk"><input type="checkbox" data-k="gh"><b>Create a GitHub account</b></label>
+<ol>
+<li>Go to <code>github.com</code> and choose Sign up.</li>
+<li>Pick a professional username (recruiters will see it), for example <code>firstname-lastname</code>.</li>
+<li>Verify your email, then turn on two-factor authentication under Settings, Password and authentication.</li>
+</ol>
+<div class="tip">Write down your username and the email you used. You will type both in step 4.</div></div>
+
+<div class="step"><label class="chk"><input type="checkbox" data-k="py"><b>Install Python (3.12 or newer)</b></label>
+<div data-o="win"><ol><li>Download the installer from <code>python.org/downloads</code>.</li><li>On the first screen, <b>tick "Add python.exe to PATH"</b>, then choose Install Now.</li></ol></div>
+<div data-o="mac"><ol><li>Download the macOS installer from <code>python.org/downloads</code> and run it, or use Homebrew: <code>brew install python</code>.</li></ol></div>
+<div data-o="linux"><p>Ubuntu or Debian:</p><pre>sudo apt update
+sudo apt install python3 python3-venv python3-pip</pre></div>
+<p>Check it worked. Open a terminal (<span data-o="win">search for PowerShell in the Start menu</span><span data-o="mac">press Cmd + Space and type Terminal</span><span data-o="linux">press Ctrl + Alt + T</span>) and run:</p>
+<pre data-o="win">python --version</pre>
+<pre data-o="mac linux">python3 --version</pre>
+<p>You should see a version such as <code>Python 3.12.x</code> or higher.</p>
+<details data-o="win"><summary>It says "python is not recognized"</summary><p>The PATH box was not ticked. Run the installer again, choose Modify or Uninstall, reinstall, and tick the PATH box. Then close and reopen the terminal.</p></details>
+<details data-o="mac linux"><summary>It says "command not found: python3"</summary><p>Close and reopen the terminal and try again. If it still fails, run the installer again (Mac) or the <code>apt install</code> command (Linux). Use <code>python3</code>, not <code>python</code>, on your computer.</p></details></div>
+
+<div class="step"><label class="chk"><input type="checkbox" data-k="vs"><b>Install VS Code and two extensions</b></label>
+<ol>
+<li>Download VS Code from <code>code.visualstudio.com</code> and install it with the default options.</li>
+<li>Open VS Code, click the Extensions icon in the left bar (four squares), and install <b>Python</b> (by Microsoft) and <b>Ruff</b> (by Astral Software).</li>
+<li>Choose File, Open Folder, and create a new folder called <code>fde-module2</code> in your Documents.</li>
+</ol>
+<div class="tip">Open the built-in terminal with Ctrl + ` (backtick). You will use it in every class.</div></div>
+
+<div class="step"><label class="chk"><input type="checkbox" data-k="git"><b>Install Git and introduce yourself</b></label>
+<div data-o="win"><p>Download Git from <code>git-scm.com</code> and install with the default options.</p></div>
+<div data-o="mac"><p>In Terminal run <code>git --version</code>. If macOS offers to install developer tools, accept. Or use <code>brew install git</code>.</p></div>
+<div data-o="linux"><pre>sudo apt install git</pre></div>
+<p>Close and reopen the terminal, then run this once, with your own name and the email from your GitHub account:</p>
+<pre>git --version
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main</pre></div>
+
+<div class="step"><label class="chk"><input type="checkbox" data-k="uv"><b>Install uv (our package and environment tool)</b></label>
+<pre data-o="win">powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</pre>
+<pre data-o="mac linux">curl -LsSf https://astral.sh/uv/install.sh | sh</pre>
+<p>Close and reopen the terminal, then check:</p>
+<pre>uv --version</pre></div>
+
+<div class="step"><label class="chk"><input type="checkbox" data-k="smoke"><b>Run the smoke test</b></label>
+<p>This proves Python, Git and GitHub all work together. In the VS Code terminal:</p>
+<pre>mkdir fde-hello
+cd fde-hello
+git init</pre>
+<p>Create a file named <code>hello.py</code> in VS Code with these two lines and save it:</p>
+<pre>name = "FDE"
+print(f"Hello, {name}! Python is working.")</pre>
+<p>Run it, then save a snapshot with Git:</p>
+<pre>uv run hello.py
+git add hello.py
+git commit -m "Add hello script"</pre>
+<p>Now send it to GitHub. First create an empty repository named <code>fde-hello</code> on github.com (New repository, leave every box unticked). Then replace YOUR-USERNAME below:</p>
+<pre>git remote add origin https://github.com/YOUR-USERNAME/fde-hello.git
+git push -u origin main</pre>
+<p>A browser window opens asking you to sign in to GitHub. Approve it. Refresh your repository page: you should see <code>hello.py</code>.</p>
+<details><summary>Push asks for a password or fails</summary><p>GitHub no longer accepts account passwords here. Choose "Sign in with browser" if offered. If you are stuck, create a Personal Access Token under GitHub Settings, Developer settings, and paste it when asked for a password. Bring the exact error message to class.</p></details></div>
+
+<div class="ready" id="ready"><h3>You are ready for Class 1.</h3><p>Bring your laptop charged, with VS Code open on your <code>fde-module2</code> folder. Stuck on any step? Take a screenshot of the error and send it to your instructor before class.</p></div>
+</section>
+
+<!-- PYTHON -->
+<section id="py" class="hide">
+<input class="search" type="search" placeholder="Search Python: try loop, file, class, error" aria-label="Search Python cheat sheet" data-filter="py">
+<div class="grid">
+<div class="card"><h3>Variables and types</h3><p>Names that hold values</p><pre>count = 42          # int
+price = 19.99       # float
+name = "Meridian"   # str
+paid = True         # bool
+type(price)         # shows the type
+int("7") + 1        # convert text to number</pre></div>
+<div class="card"><h3>Strings and f-strings</h3><p>Text and formatting</p><pre>city = "Pune"
+f"Order from {city}"      # insert values
+city.upper()  city.strip()
+"a,b,c".split(",")        # ['a','b','c']
+"-".join(["a","b"])       # 'a-b'
+city[0]  city[1:3]        # slicing</pre></div>
+<div class="card"><h3>Conditions</h3><p>Make decisions. Indentation matters</p><pre>if total &gt; 1000:
+    tier = "large"
+elif total &gt; 100:
+    tier = "medium"
+else:
+    tier = "small"
+# == equal, != not equal, and, or, not, in</pre></div>
+<div class="card"><h3>Loops</h3><p>Repeat work</p><pre>for order in orders:
+    print(order)
+for i in range(3):        # 0, 1, 2
+    print(i)
+while retries &lt; 3:
+    retries += 1
+# break stops, continue skips to next</pre></div>
+<div class="card"><h3>Lists</h3><p>Ordered, changeable</p><pre>items = ["a", "b"]
+items.append("c")
+items[0]   items[-1]
+len(items)
+sorted(items)
+"a" in items
+for i, x in enumerate(items): ...</pre></div>
+<div class="card"><h3>Dicts, tuples, sets</h3><p>Key-value data is everywhere in orders</p><pre>order = {"id": 7, "amount": 250}
+order["id"]
+order.get("city", "unknown")   # safe lookup
+order["paid"] = True
+for k, v in order.items(): ...
+point = (1, 2)                 # tuple: fixed
+ids = {1, 2, 2}                # set: unique
+orders = [{"id": 1}, {"id": 2}]  # list of dicts</pre></div>
+<div class="card"><h3>Functions</h3><p>Reusable steps</p><pre>def total(price, qty=1):
+    """Return price times quantity."""
+    return price * qty
+
+total(10, 3)      # 30
+total(10)         # uses qty=1
+total(qty=2, price=5)</pre></div>
+<div class="card"><h3>Files, CSV and JSON</h3><p><code>with</code> closes the file for you</p><pre>import csv, json
+with open("orders.csv", newline="") as f:
+    for row in csv.DictReader(f):
+        print(row["id"])
+with open("data.json") as f:
+    data = json.load(f)
+with open("out.json", "w") as f:
+    json.dump(data, f, indent=2)</pre></div>
+<div class="card"><h3>Comprehensions</h3><p>Build a list or dict in one line</p><pre>amounts = [o["amount"] for o in orders]
+big = [o for o in orders if o["amount"] &gt; 500]
+by_id = {o["id"]: o for o in orders}</pre></div>
+<div class="card"><h3>Generators</h3><p>Produce one item at a time, so memory stays small</p><pre>def read_rows(path):
+    with open(path) as f:
+        for line in f:
+            yield line.strip()
+
+for row in read_rows("big.csv"):
+    ...
+squares = (n*n for n in range(10**6))  # lazy</pre></div>
+<div class="card"><h3>Errors</h3><p>Catch and handle problems</p><pre>try:
+    qty = int(row["qty"])
+except (ValueError, KeyError) as e:
+    print("bad row:", e)
+else:
+    print("ok")
+finally:
+    print("always runs")
+raise ValueError("amount must be positive")</pre></div>
+<div class="card"><h3>Classes and dataclasses</h3><p>Model orders, customers, payments</p><pre>from dataclasses import dataclass
+
+@dataclass
+class Order:
+    id: int
+    amount: float
+    paid: bool = False
+
+o = Order(id=1, amount=250.0)
+o.amount   # 250.0</pre></div>
+<div class="card"><h3>Decorators and with</h3><p>Wrap behaviour around code</p><pre>import time
+def timed(fn):
+    def wrap(*a, **k):
+        t = time.time()
+        out = fn(*a, **k)
+        print(fn.__name__, time.time() - t)
+        return out
+    return wrap
+
+@timed
+def load(): ...</pre></div>
+<div class="card"><h3>Imports, uv and pip</h3><p>Run code and install packages</p><pre>import math
+from pathlib import Path
+uv init myproject        # new project
+uv add pydantic          # install a package
+uv run script.py         # run in the environment
+uv run pytest            # run tests
+uv run ruff check .      # lint</pre></div>
+<div class="card"><h3>Reading a traceback</h3><p>Read from the bottom up</p><pre>Traceback (most recent call last):
+  File "app.py", line 8, in load
+    amount = int(row["amt"])
+KeyError: 'amt'</pre><p>Last line: the error type and message. Lines above: where it happened. Start with the line number in your own file.</p></div>
+<div class="card"><h3>pytest basics</h3><p>Prove your code works</p><pre># test_total.py
+from shop import total
+
+def test_total():
+    assert total(10, 3) == 30
+
+# run:  uv run pytest</pre></div>
+</div>
+</section>
+
+<!-- GIT -->
+<section id="git" class="hide">
+<div class="model">Working folder  --git add-->  Staging  --git commit-->  Local repo  --git push-->  GitHub
+(your files)                 (next snapshot)            (your history)                (shared copy)</div>
+<input class="search" type="search" placeholder="Search Git: try branch, undo, push, conflict" aria-label="Search Git cheat sheet" data-filter="git">
+<div class="grid">
+<div class="card git"><h3>One-time setup</h3><p>Run once per laptop</p><pre>git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main</pre></div>
+<div class="card git"><h3>Start a repository</h3><p>New project or copy an existing one</p><pre>git init                      # in your project folder
+git clone https://github.com/USER/REPO.git</pre></div>
+<div class="card git"><h3>The daily loop</h3><p>Check, stage, snapshot</p><pre>git status                    # what changed?
+git add file.py               # stage one file
+git add .                     # stage everything
+git commit -m "Add order parser"</pre></div>
+<div class="card git"><h3>Look around</h3><p>History and differences</p><pre>git log --oneline             # short history
+git diff                      # unstaged changes
+git diff --staged             # staged changes
+git show HEAD                 # latest commit</pre></div>
+<div class="card git"><h3>.gitignore</h3><p>Files Git must never track. Create a file named .gitignore</p><pre>.venv/
+__pycache__/
+*.pyc
+.env
+data/*.csv</pre><p>Never commit passwords, API keys or client data.</p></div>
+<div class="card git"><h3>Remotes: push and pull</h3><p>Sync with GitHub</p><pre>git remote add origin URL     # once
+git push -u origin main       # first push
+git push                      # later pushes
+git pull                      # get teammates' work
+git fetch                     # look, don't merge</pre></div>
+<div class="card git"><h3>Branches</h3><p>Work on a change without touching main</p><pre>git switch -c fix-parser      # create and move
+git branch                    # list branches
+git switch main               # go back
+git push -u origin fix-parser # publish branch
+git branch -d fix-parser      # delete after merge</pre></div>
+<div class="card git"><h3>Merge and conflicts</h3><p>Combine branches</p><pre>git switch main
+git pull
+git merge fix-parser</pre><p>On a conflict, open the file, find the markers, keep the right lines, delete the markers, then:</p><pre>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+your version
+=======
+their version
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; fix-parser
+
+git add file.py
+git commit</pre></div>
+<div class="card git"><h3>Pull request workflow</h3><p>How changes reach main in teams</p><pre>git switch -c add-validation
+# edit, test, then
+git add .
+git commit -m "Validate order records"
+git push -u origin add-validation</pre><p>On GitHub click Compare and pull request, describe the change, request a review, fix comments, then Merge.</p></div>
+<div class="card git"><h3>Undo mistakes</h3><p>Pick the smallest tool</p><pre>git restore file.py           # discard edits
+git restore --staged file.py  # unstage
+git commit --amend -m "New message"  # fix last commit
+git revert HEAD               # safe undo of a pushed commit</pre><p>Avoid <code>git reset --hard</code> until you are confident: it deletes work.</p></div>
+<div class="card git"><h3>Good commit messages</h3><p>Reviewers read these</p><pre>Add retry to shipping API client
+Fix crash on empty order file
+Validate order totals with Pydantic</pre><p>Start with a verb, say what changed, keep it under about 60 characters, one idea per commit.</p></div>
+<div class="card git"><h3>GitHub Actions in one minute</h3><p>Run tests on every push. File: .github/workflows/ci.yml</p><pre>name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv run pytest</pre></div>
+</div>
+</section>
+</div>
+
+<script>
+var $=function(s){return document.querySelector(s)},$$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+var KEY='fde-m2-starter',st={};
+try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function update(){var boxes=$$('input[data-k]'),n=0;
+boxes.forEach(function(b){if(b.checked)n++;b.closest('.step').classList.toggle('done',b.checked)});
+$('#pt').textContent=n+' of '+boxes.length+' steps done';
+$('#pb').style.width=(n/boxes.length*100)+'%';
+$('#ready').classList.toggle('on',n===boxes.length)}
+$$('input[data-k]').forEach(function(b){b.checked=!!st[b.dataset.k];
+b.addEventListener('change',function(){st[b.dataset.k]=b.checked;save();update()})});
+update();
+function setOS(o){document.body.dataset.os=o;$$('.os button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.os===o)});st.os=o;save()}
+var p=(navigator.platform||'').toLowerCase();
+setOS(st.os||(p.indexOf('mac')>-1?'mac':p.indexOf('linux')>-1?'linux':'win'));
+$$('.os button').forEach(function(b){b.addEventListener('click',function(){setOS(b.dataset.os)})});
+function tab(t){['pre','py','git'].forEach(function(id){$('#'+id).classList.toggle('hide',id!==t)});
+$$('.tabs button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.tab===t)})}
+$$('.tabs button').forEach(function(b){b.addEventListener('click',function(){tab(b.dataset.tab)})});
+$$('pre').forEach(function(pre){if(pre.closest('.model'))return;
+var c=document.createElement('button');c.className='cp';c.textContent='Copy';c.type='button';
+c.addEventListener('click',function(){var t=pre.innerText.replace(/Copy$/,'').trim();
+function done(){c.textContent='Copied';setTimeout(function(){c.textContent='Copy'},1200)}
+try{navigator.clipboard.writeText(t).then(done,function(){c.textContent='Select and copy'})}catch(e){c.textContent='Select and copy'}});
+pre.appendChild(c)});
+$$('.search').forEach(function(inp){inp.addEventListener('input',function(){
+var q=inp.value.toLowerCase();$$('#'+inp.dataset.filter+' .card').forEach(function(c){c.classList.toggle('hide',q&&c.textContent.toLowerCase().indexOf(q)<0)})})});
+</script>
+</body>
+</html>
